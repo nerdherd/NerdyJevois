@@ -7,18 +7,17 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class targetData extends Command {
+public class init extends Command {
 
-    public targetData() {
+    public init() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 	requires(Robot.targetDetect);
-	setTimeout(4);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-	Robot.targetDetect.setStatus(true);
+	Robot.targetDetect.init();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -27,12 +26,11 @@ public class targetData extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-	Robot.targetDetect.setStatus(false);
     }
 
     // Called when another command which requires one or more of the same

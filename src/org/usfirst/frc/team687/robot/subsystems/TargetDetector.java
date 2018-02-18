@@ -21,7 +21,9 @@ public class TargetDetector extends Subsystem {
     private AHRS navx;
     private NerdyPID pid;
     private CameraThread jevois;
-	
+
+    private int BAUD = 115200;
+    
     private double camera_FOV_pixel = 360;
     private double camera_FOV_degree = 65;
 
@@ -31,33 +33,14 @@ public class TargetDetector extends Subsystem {
 //    public double contourID;
 	
     public TargetDetector(){
-	init();
+	jevois = new CameraThread(BAUD, SerialPort.Port.kUSB);
+	pid = new NerdyPID();
+    	navx = new AHRS(SerialPort.Port.kMXP);
     }
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    }
-    
-    public boolean getStatus(){
-	return jevois.getStatus();
-    }
-    
-    public boolean isAlive(){
-	return jevois.isAlive();
-    }
-    
-    private void init(){
-	jevois = new CameraThread();
-	pid = new NerdyPID();
-    	navx = new AHRS(SerialPort.Port.kMXP);
-    }
-    
-    public void update(){
-//	jevois.isAlive();
-//	contourID = jevois.getData(0);
-//	target_centroid_pixel = jevois.getData(2);
-//	target_length_pixel = jevois.getData(5);
     }
     
     public double angleMotorOutput(){
@@ -125,6 +108,10 @@ public class TargetDetector extends Subsystem {
 	return pid.getError();
     }
     
+    public void init(){
+	jevois.init();
+    }
+    
     public void ping(){
 	jevois.ping();
     }
@@ -147,10 +134,6 @@ public class TargetDetector extends Subsystem {
 
     public void end() {
 	jevois.end();
-    }
-    
-    public void setStatus(boolean status){
-	jevois.setStatus(status);
     }
 }
 

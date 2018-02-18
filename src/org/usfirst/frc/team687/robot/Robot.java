@@ -113,20 +113,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-//		System.out.println("targetDetect created" + targetDetect.isAlive());
-//		System.out.println("THIS IS THE STATUS: " + targetDetect.getStatus());
-////		if(targetDetect.dataStatus){
-//		try{
-//		    targetDetect.update();
-//		} catch (Exception e){
-//		    System.out.println("null error still.......");
-//		}
-//		
-//		if (targetDetect.getStatus()){
-//		    targetDetect.update();
-//		}
-//		
-//		} 
 	}
 
 	/**
