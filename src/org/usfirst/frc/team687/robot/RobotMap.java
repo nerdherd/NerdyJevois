@@ -15,7 +15,7 @@ package org.usfirst.frc.team687.robot;
  */
 public class RobotMap {
 
-    public static final double CUBE_LENGTH_INCH = 0;
+    public static final double CUBE_LENGTH_INCH = 13;
     public static final double ANGLE_TOLERANCE = 0.5;
     public static final double DISTANCE_TOLERANCE = 1;
 	// For example to map the left and right motors, you could define the
