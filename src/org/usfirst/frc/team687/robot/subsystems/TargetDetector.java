@@ -43,9 +43,13 @@ public class TargetDetector extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public double angleMotorOutput(){
-	double power = pid.calculate(getTargetAngle(jevois.getTargetLengthPixel()));
-	return power;
+    //TESTING
+    public void angleMotorOutput(){
+	System.out.println(getTargetAngle(jevois.getTargetLengthPixel()));
+    //REAL
+//    public double angleMotorOutput();
+//	double power = pid.calculate(getTargetAngle(jevois.getTargetLengthPixel()));
+//	return power;
     }
     
     public double targetMotorOutput(){
@@ -79,6 +83,10 @@ public class TargetDetector extends Subsystem {
     	target_coordinate_inch[1] = target_coordinate_inch[0]/Math.tan(pixelToDegree(target_length_pixel_m)); //y
     	
     	return target_coordinate_inch;
+    }
+    
+    public void resetNavX(){
+	navx.reset();
     }
     
     private double getTargetAngle(double target_length_pixel) {

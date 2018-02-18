@@ -24,6 +24,7 @@ public class CameraThread extends Subsystem implements Runnable {
     
     public void run() {
 	while(stream.isAlive()){
+	    Timer.delay(0.5);
 	    if(send){
 		cam.writeString(sendValue);
 		send = false;

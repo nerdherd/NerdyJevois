@@ -6,8 +6,10 @@ class HSVDetector:
     # ###################################################################################################
     ## Constructor
     def __init__(self):
-        # Instantiate a JeVois Timer to measure our processing framerate:
-        self.timer = jevois.Timer("sandbox", 100, jevois.LOG_INFO)
+        # Instantiate a JeVois S to measure our processing framerate:
+        # self.timer = jevois.Timer("sandbox", 100, jevois.LOG_INFO)
+
+        self.outimg = None
 
         # SPECIAL REPLACED BLUR CONSTANT
         self.__blur_type = 0
@@ -15,7 +17,7 @@ class HSVDetector:
     # ###################################################################################################
         # ALL CONSTANTS GO UNDER HERE (make sure to remove the self.__blur_type line)
 
-        self.__blur_radius = 9.433962264150944
+        self.__blur_radius = 13.207547169811324
 
         self.blur_output = None
 
@@ -25,8 +27,8 @@ class HSVDetector:
         self.cv_extractchannel_output = None
 
         self.__cv_threshold_src = self.cv_extractchannel_output
-        self.__cv_threshold_thresh = 20.0
-        self.__cv_threshold_maxval = 215.0
+        self.__cv_threshold_thresh = 65.0
+        self.__cv_threshold_maxval = 255.0
         self.__cv_threshold_type = cv2.THRESH_BINARY
 
         self.cv_threshold_output = None
@@ -44,8 +46,8 @@ class HSVDetector:
         self.normalize_output = None
 
         self.__hsv_threshold_input = self.normalize_output
-        self.__hsv_threshold_hue = [20.33898305084746, 50.298769771528995]
-        self.__hsv_threshold_saturation = [0.0, 255.0]
+        self.__hsv_threshold_hue = [50.84745762711866, 72.4428822495606]
+        self.__hsv_threshold_saturation = [0.0, 232.59226713532513]
         self.__hsv_threshold_value = [0.0, 255.0]
 
         self.hsv_threshold_output = None
@@ -62,7 +64,7 @@ class HSVDetector:
         self.__cv_dilate_src = self.cv_erode_output
         self.__cv_dilate_kernel = None
         self.__cv_dilate_anchor = (-1, -1)
-        self.__cv_dilate_iterations = 1.0
+        self.__cv_dilate_iterations = 9.0
         self.__cv_dilate_bordertype = cv2.BORDER_CONSTANT
         self.__cv_dilate_bordervalue = (-1)
 
@@ -74,13 +76,13 @@ class HSVDetector:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 0.0
-        self.__filter_contours_min_perimeter = 0.0
-        self.__filter_contours_min_width = 0.0
+        self.__filter_contours_min_area = 7000.0
+        self.__filter_contours_min_perimeter = 400.0
+        self.__filter_contours_min_width = 50.0
         self.__filter_contours_max_width = 10000.0
-        self.__filter_contours_min_height = 0.0
+        self.__filter_contours_min_height = 50.0
         self.__filter_contours_max_height = 10000.0
-        self.__filter_contours_solidity = [0.0, 100]
+        self.__filter_contours_solidity = [48.02259887005649, 100.0]
         self.__filter_contours_max_vertices = 10000.0
         self.__filter_contours_min_vertices = 0.0
         self.__filter_contours_min_ratio = 0.0
@@ -95,10 +97,10 @@ class HSVDetector:
 
     def processNoUSB(self, inframe):
         source0 = inimg = inframe.getCvBGR()
-        outimg = inimg = inframe.getCvBGR()
+        self.outimg = inimg = inframe.getCvBGR()
 
         # Start measuring image processing time (NOTE: does not account for input conversion time):
-        self.timer.start()
+        # self.timer.start()
 
 #################################################################################################
 
@@ -182,7 +184,7 @@ class HSVDetector:
 ##################################################################################################
 
         # Draws all contours on original image in red
-        # cv2.drawContours(outimg, self.filter_contours_output, -1, (0, 0, 255), 1)
+        # cv2.drawContours(self.outimg, self.filter_contours_output, -1, (0, 0, 255), 1)
 
         # Gets number of contours
         contourNum = len(self.filter_contours_output)
@@ -201,150 +203,36 @@ class HSVDetector:
             # which contour, 0 is first
             toSend = ("/" + str(i) +
                      "/" + str(getArea(cnt)) +  # Area of contour
-                     "/" + str(round((getXcoord(cnt)*FOV_x/320), 2)) +  # x-coordinate of centroid of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round(getYcoord(cnt)*FOV_y/240, 2)) +  # y-coordinate of contour, 0-270 rounded to 2 decimal
-                     "/" + str(round(h*FOV_y/240, 2)) +  # Height of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round(w*FOV_x/320, 2))) # Width of contour, 0-270 rounded to 2 decimal
+                     "/" + str(round((getXcoord(cnt)*FOV_x/320)-(FOV_x/2), 2)) +  # x-coordinate of centroid of contour, 0-360 rounded to 2 decimal
+                     "/" + str(round((FOV_y/2)-(getYcoord(cnt)*FOV_y/240), 2)) +  # y-coordinate of contour, 0-270 rounded to 2 decimal
+                     "/" + str(round((h*FOV_y/240), 2)) +  # Height of contour, 0-360 rounded to 2 decimal
+                     "/" + str(round(-(w*FOV_x/320), 2))) # Width of contour, 0-270 rounded to 2 decimal
             jevois.sendSerial(toSend)
 
         # Write a title:
-        # cv2.putText(outimg, "Nerdy Jevois No USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
+        # cv2.putText(self.outimg, "Nerdy Jevois No USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
         # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
-        fps = self.timer.stop()
+        # fps = self.timer.stop()
         #height, width, channels = outimg.shape # if outimg is grayscale, change to: height, width = outimg.shape
-        height, width, channels = outimg.shape
+        height, width, channels = self.outimg.shape
         # cv2.putText(outimg, fps, (3, height - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
     def process(self, inframe, outframe):
-        # Get the next camera image (may block until it is captured) and here convert it to OpenCV BGR by default. If
-        # you need a grayscale image instead, just use getCvGRAY() instead of getCvBGR(). Also supported are getCvRGB()
-        # and getCvRGBA():
-        source0 = inimg = inframe.getCvBGR()
-        outimg = inimg = inframe.getCvBGR()
-
-        # Start measuring image processing time (NOTE: does not account for input conversion time):
-        self.timer.start()
-
-#################################################################################################
-
-        # BEGIN GRIP CODE
-
-#################################################################################################
-        """
-        Runs the pipeline and sets all outputs to new values.
-        """
-        # Step Blur0:
-        self.__blur_input = source0
-        (self.blur_output) = self.__blur(self.__blur_input, self.__blur_type, self.__blur_radius)
-
-        # Step CV_extractChannel0:
-        self.__cv_extractchannel_src = self.blur_output
-        (self.cv_extractchannel_output) = self.__cv_extractchannel(self.__cv_extractchannel_src, self.__cv_extractchannel_channel)
-
-        # Step CV_Threshold0:
-        self.__cv_threshold_src = self.cv_extractchannel_output
-        (self.cv_threshold_output) = self.__cv_threshold(self.__cv_threshold_src, self.__cv_threshold_thresh, self.__cv_threshold_maxval, self.__cv_threshold_type)
-
-        # Step Mask0:
-        self.__mask_input = self.blur_output
-        self.__mask_mask = self.cv_threshold_output
-        (self.mask_output) = self.__mask(self.__mask_input, self.__mask_mask)
-
-        # Step Normalize0:
-        self.__normalize_input = self.mask_output
-        (self.normalize_output) = self.__normalize(self.__normalize_input, self.__normalize_type, self.__normalize_alpha, self.__normalize_beta)
-
-        # Step HSV_Threshold0:
-        self.__hsv_threshold_input = self.normalize_output
-        (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
-
-        # Step CV_erode0:
-        self.__cv_erode_src = self.hsv_threshold_output
-        (self.cv_erode_output) = self.__cv_erode(self.__cv_erode_src, self.__cv_erode_kernel, self.__cv_erode_anchor, self.__cv_erode_iterations, self.__cv_erode_bordertype, self.__cv_erode_bordervalue)
-
-        # Step CV_dilate0:
-        self.__cv_dilate_src = self.cv_erode_output
-        (self.cv_dilate_output) = self.__cv_dilate(self.__cv_dilate_src, self.__cv_dilate_kernel, self.__cv_dilate_anchor, self.__cv_dilate_iterations, self.__cv_dilate_bordertype, self.__cv_dilate_bordervalue)
-
-        # Step Find_Contours0:
-        self.__find_contours_input = self.cv_dilate_output
-        (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
-
-        # Step Filter_Contours0:
-        self.__filter_contours_contours = self.find_contours_output
-        (self.filter_contours_output) = self.__filter_contours(self.__filter_contours_contours, self.__filter_contours_min_area, self.__filter_contours_min_perimeter, self.__filter_contours_min_width, self.__filter_contours_max_width, self.__filter_contours_min_height, self.__filter_contours_max_height, self.__filter_contours_solidity, self.__filter_contours_max_vertices, self.__filter_contours_min_vertices, self.__filter_contours_min_ratio, self.__filter_contours_max_ratio)
-
-#################################################################################################
-
-        # END GRIP CODE
-
-##################################################################################################
-
-        # DEFAULT CUSTOM CODE
-
-        def getArea(con): # Gets the area of the contour
-            return cv2.contourArea(con)
-
-        def getYcoord(con): # Gets the Y coordinate of the contour
-            M = cv2.moments(con)
-            cy = int(M['m01']/M['m00'])
-            return cy
-
-        def getXcoord(con): # Gets the X coordinate of the contour
-            M = cv2.moments(con)
-            cy = int(M['m10']/M['m00'])
-            return cy
-
-        def sortByArea(conts) : # Returns an array sorted by area from smallest to largest
-            contourNum = len(conts) # Gets number of contours
-            sortedBy = sorted(conts, key=getArea) # sortedBy now has all the contours sorted by area
-            return sortedBy
-
-##################################################################################################
-
-        # PUT YOUR CUSTOM CODE HERE
-
-##################################################################################################
-
-        # Draws all contours on original image in red
-        cv2.drawContours(outimg, self.filter_contours_output, -1, (0, 0, 255), 1)
-
-        # Gets number of contours
-        contourNum = len(self.filter_contours_output)
-
-        # Sorts contours by the smallest area first
-        newContours = sortByArea(self.filter_contours_output)
-
-        FOV_x = 360
-        FOV_y = 270
-
-        # Send the contour data over Serial
-        for i in range (contourNum):
-            cnt = newContours[i]
-            x,y,w,h = cv2.boundingRect(cnt) # Get the stats of the contour including width and height
-
-            # which contour, 0 is first
-            toSend = ("/" + str(i) +
-                     "/" + str(getArea(cnt)) +  # Area of contour
-                     "/" + str(round((getXcoord(cnt)*FOV_x/320), 2)) +  # x-coordinate of centroid of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round(getYcoord(cnt)*FOV_y/240, 2)) +  # y-coordinate of contour, 0-270 rounded to 2 decimal
-                     "/" + str(round(h*FOV_y/240, 2)) +  # Height of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round(w*FOV_x/320, 2))) # Width of contour, 0-270 rounded to 2 decimal
-            jevois.sendSerial(toSend)
+        self.processNoUSB(inframe)
 
         # Write a title:
-        cv2.putText(outimg, "NerdyJevois USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
+        cv2.putText(self.outimg, "NerdyJevois USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
         # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
-        fps = self.timer.stop()
+        # fps = self.timer.stop()
         #height, width, channels = outimg.shape # if outimg is grayscale, change to: height, width = outimg.shape
-        height, width, channels = outimg.shape
-        cv2.putText(outimg, fps, (3, height - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
+        # height, width, channels = outimg.shape
+        # cv2.putText(outimg, fps, (3, height - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
         # Convert our BGR output image to video output format and send to host over USB. If your output image is not
         # BGR, you can use sendCvGRAY(), sendCvRGB(), or sendCvRGBA() as appropriate:
-        outframe.sendCvBGR(outimg)
+        outframe.sendCvBGR(self.outimg)
         # outframe.sendCvGRAY(outimg)
 
 ##################################################################################################

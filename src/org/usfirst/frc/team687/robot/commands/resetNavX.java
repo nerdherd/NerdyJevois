@@ -7,30 +7,29 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class angleErrorMotion extends Command {
+public class resetNavX extends Command {
 
-    private double angleTolerance;
-    
-    public angleErrorMotion(double angleTolerance) {
-	this.angleTolerance = angleTolerance;
-	
+    public resetNavX() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
 	requires(Robot.targetDetect);
-	setTimeout(3.0);
     }
 
+    // Called just before this Command runs the first time
     protected void initialize() {
-	
+	Robot.targetDetect.resetNavX();
     }
 
+    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-	Robot.targetDetect.angleMotorOutput();
-//	System.out.println(Robot.targetDetect.angleMotorOutput());
     }
 
+    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return isTimedOut() || (Robot.targetDetect.getError() < angleTolerance) ? true : false;
+        return false;
     }
 
+    // Called once after isFinished returns true
     protected void end() {
     }
 
