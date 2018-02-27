@@ -1,4 +1,4 @@
-package org.usfirst.frc.team687.util;
+package org.usfirst.frc.team687.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
