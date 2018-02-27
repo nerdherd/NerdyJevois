@@ -16,6 +16,8 @@ import org.usfirst.frc.team687.robot.commands.streamoff;
 import org.usfirst.frc.team687.robot.commands.streamon;
 import org.usfirst.frc.team687.robot.commands.log;
 import org.usfirst.frc.team687.robot.commands.init;
+import org.usfirst.frc.team687.robot.commands.resetNavX;
+import org.usfirst.frc.team687.robot.commands.absexp;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -27,7 +29,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 public class OI {
 	
 	Joystick joy;
-	JoystickButton ping, streamoff, streamon, log, setMapping, angleErrorMotion, distanceErrorMotion, init;
+	JoystickButton ping, streamoff, streamon, log, setMapping, angleErrorMotion, distanceErrorMotion, resetNavX,absexp, init; 
 	
 	//2, 4, 3, 11
 	
@@ -55,9 +57,14 @@ public class OI {
 		distanceErrorMotion = new JoystickButton(joy,7);
 		distanceErrorMotion.whenPressed(new distanceErrorMotion(RobotMap.DISTANCE_TOLERANCE));
 		
+		resetNavX = new JoystickButton(joy,9);
+		resetNavX.whenPressed(new resetNavX());
+		
+		absexp = new JoystickButton(joy,10);
+		absexp.whenPressed(new absexp());
+		
 		init = new JoystickButton(joy, 8);
 		init.whenPressed(new init());
-		
 	}
 	
 	//// CREATING BUTTONS

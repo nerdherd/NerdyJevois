@@ -23,7 +23,7 @@ public class distanceErrorMotion extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-	Robot.targetDetect.targetMotorOutput();
+//	Robot.targetDetect.targetMotorOutput();
     }
 
     // Make this return true when this Command no longer needs to run execute()

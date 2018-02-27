@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CameraThread extends Subsystem implements Runnable {
     private SerialPort cam;
@@ -36,16 +37,27 @@ public class CameraThread extends Subsystem implements Runnable {
 		if(read.charAt(0) == '/'){
 		    parts = dataParse(read);
 //		    contourID = Integer.parseInt(getData(0));
-		    target_centroid_pixel = Double.parseDouble(getData(2));
-		    target_length_pixel = Double.parseDouble(getData(5));
-//		    System.out.println(getData(0));
-    		    System.out.println(getData(2));
-    		    System.out.println(getData(5));
+		    target_centroid_pixel = Math.abs(Double.parseDouble(getData(3)));
+		    target_length_pixel = Math.abs(Double.parseDouble(getData(6)));
+//    		    System.out.println(getData(1)); //contour 
+//    		    System.out.println(getData(2)); //area
+//    		    SmartDashboard.putNumber("x coordinate: ", Double.parseDouble(getData(3))); //x-coordinate
+//    		    System.out.println(getData(4)); //y-coordinate
+//    		    System.out.println(getData(5)); //height
+//    		    System.out.println(getData(6)); //width
 		} else {
 		    System.out.println(read);
 		}
 	    }
 	}
+    }
+    
+    public double getTargetX(){
+	return target_centroid_pixel;
+    }
+    
+    public double getTargetLength(){
+	return target_length_pixel;
     }
     
     public void end(){
@@ -56,6 +68,8 @@ public class CameraThread extends Subsystem implements Runnable {
 	sendValue = value + "\n";
 	send = true;
     }
+    
+    
     
     private String[] dataParse(String input){
 //	System.out.println("THIS IS THE WHOLE INPUT: " + input);
@@ -77,7 +91,7 @@ public class CameraThread extends Subsystem implements Runnable {
 //	return contourID;
 //    }
     
-    public double getTargetCentroidPixel(){
+    public double getTargetCentroidXPixel(){
 	return target_centroid_pixel;
     }
     
@@ -96,6 +110,11 @@ public class CameraThread extends Subsystem implements Runnable {
 	sendCommand("setmapping2 YUYV 320 240 59.9 YUYV 320 240 59.9 JeVois HSVDetector");
 	Timer.delay(0.1);
     }
+    
+    public void setAbsExp(){
+   	sendCommand("setcam absexp 800");
+   	Timer.delay(0.1);
+       }
     
     public void log(){
 	sendCommand("setpar serlog All");
