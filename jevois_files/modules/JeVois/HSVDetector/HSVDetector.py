@@ -192,9 +192,6 @@ class HSVDetector:
         # Sorts contours by the smallest area first
         newContours = sortByArea(self.filter_contours_output)
 
-        FOV_x = 360
-        FOV_y = 270
-
         # Send the contour data over Serial
         for i in range (contourNum):
             cnt = newContours[i]
@@ -203,10 +200,10 @@ class HSVDetector:
             # which contour, 0 is first
             toSend = ("/" + str(i) +
                      "/" + str(getArea(cnt)) +  # Area of contour
-                     "/" + str(round((getXcoord(cnt)*FOV_x/320)-(FOV_x/2), 2)) +  # x-coordinate of centroid of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round((FOV_y/2)-(getYcoord(cnt)*FOV_y/240), 2)) +  # y-coordinate of contour, 0-270 rounded to 2 decimal
-                     "/" + str(round((h*FOV_y/240), 2)) +  # Height of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round(-(w*FOV_x/320), 2))) # Width of contour, 0-270 rounded to 2 decimal
+                     "/" + str(round(getXcoord(cnt)-160, 2)) +  # x-coordinate of centroid of contour, -160 to 160 rounded to 2 decimal
+                     "/" + str(round(120-getYcoord(cnt), 2)) +  # y-coordinate of contour, -120 to 120 rounded to 2 decimal
+                     "/" + str(round(h, 2)) +  # Height of contour, 0-320 rounded to 2 decimal
+                     "/" + str(round(w, 2))) # Width of contour, 0-240 rounded to 2 decimal
             jevois.sendSerial(toSend)
 
         # Write a title:
@@ -222,7 +219,7 @@ class HSVDetector:
         self.processNoUSB(inframe)
 
         # Write a title:
-        cv2.putText(self.outimg, "NerdyJevois USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
+        # cv2.putText(self.outimg, "NerdyJevois USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
         # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
         # fps = self.timer.stop()
