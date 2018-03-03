@@ -1,7 +1,6 @@
 package org.usfirst.frc.team687.robot.subsystems;
 
 import org.usfirst.frc.team687.robot.RobotMap;
-import org.usfirst.frc.team687.util.CameraThread;
 import org.usfirst.frc.team687.util.NerdyPID;
 
 import com.kauailabs.navx.frc.AHRS;

@@ -7,14 +7,14 @@
 
 package org.usfirst.frc.team687.robot;
 
+import org.usfirst.frc.team687.robot.subsystems.CameraThread;
+import org.usfirst.frc.team687.robot.subsystems.TargetDetector;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team687.robot.subsystems.TargetDetector;
-import org.usfirst.frc.team687.util.CameraThread;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,7 +25,7 @@ import org.usfirst.frc.team687.util.CameraThread;
  */
 public class Robot extends TimedRobot {
 	public static OI oi;
-//	public static CameraThread jevois;
+	public static CameraThread jevois;
 	public static TargetDetector targetDetect;
 	
 	Command m_autonomousCommand;
