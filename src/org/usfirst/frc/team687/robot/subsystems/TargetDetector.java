@@ -131,7 +131,9 @@ public class TargetDetector extends Subsystem {
     }
     
     public void streamon(){
+	System.out.println("STREAM ON INITIALIZED");
 	jevois.streamon();
+	System.out.println("STREAM ON INITIALIZED AGAIN");
     }
     
     public void streamoff(){

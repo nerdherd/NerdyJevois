@@ -32,13 +32,16 @@ public class CameraThread extends Subsystem implements Runnable {
 	    }
 	    if(cam.getBytesReceived()>0){
 //		cam.readString();
-//		System.out.println("data status is true!!!");
+		System.out.println("data status is true!!!");
 		String read = cam.readString();
+		System.out.println("RAW OUTPUT NOW: " + read);
 		if(read.charAt(0) == '/'){
 		    parts = dataParse(read);
 //		    contourID = Integer.parseInt(getData(0));
 		    target_centroid_pixel = Math.abs(Double.parseDouble(getData(3)));
+		    System.out.println("cp1: " + target_centroid_pixel);
 		    target_length_pixel = Math.abs(Double.parseDouble(getData(6)));
+		    System.out.println("cp1: " + target_length_pixel);
 //    		    System.out.println(getData(1)); //contour 
 //    		    System.out.println(getData(2)); //area
 //    		    SmartDashboard.putNumber("x coordinate: ", Double.parseDouble(getData(3))); //x-coordinate
@@ -134,7 +137,7 @@ public class CameraThread extends Subsystem implements Runnable {
     }
     
     public void noAutoExp(){
-	sendCommand("setcam autoexp 0");
+	sendCommand("setcam autoexp 1");
 	Timer.delay(0.1);
     }
     

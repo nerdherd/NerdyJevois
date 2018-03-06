@@ -43,6 +43,7 @@ public class OI {
 		streamoff.whenPressed(new streamoff());
 		
 		streamon = new JoystickButton(joy,3);
+		
 		streamon.whenPressed(new streamon());
 		
 		log = new JoystickButton(joy, 4);
@@ -53,9 +54,10 @@ public class OI {
 		
 		angleErrorMotion = new JoystickButton(joy, 6);
 		angleErrorMotion.whenPressed(new angleErrorMotion(RobotMap.ANGLE_TOLERANCE));
+//		angleErrorMotion = new Joystick(new angularErrorMotion)
 		
 		distanceErrorMotion = new JoystickButton(joy,7);
-		distanceErrorMotion.whenPressed(new distanceErrorMotion(RobotMap.DISTANCE_TOLERANCE));
+//		distanceErrorMotion.whenPressed(new distanceErrorMotion(RobotMap.DISTANCE_TOLERANCE));
 		
 		resetNavX = new JoystickButton(joy,9);
 		resetNavX.whenPressed(new resetNavX());

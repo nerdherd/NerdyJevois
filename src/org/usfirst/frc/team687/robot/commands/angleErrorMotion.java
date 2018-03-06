@@ -28,7 +28,8 @@ public class angleErrorMotion extends Command {
     }
 
     protected boolean isFinished() {
-        return isTimedOut() || (Robot.targetDetect.getError() < angleTolerance) ? true : false;
+	return isTimedOut();
+//        return isTimedOut() || (Robot.targetDetect.getError() < angleTolerance) ? true : false;
     }
 
     protected void end() {

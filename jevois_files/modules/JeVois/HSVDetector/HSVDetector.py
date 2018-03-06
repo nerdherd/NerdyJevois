@@ -17,37 +17,13 @@ class HSVDetector:
     # ###################################################################################################
         # ALL CONSTANTS GO UNDER HERE (make sure to remove the self.__blur_type line)
 
-        self.__blur_radius = 13.207547169811324
+        self.__blur_radius = 9.178990311065784
 
         self.blur_output = None
 
-        self.__cv_extractchannel_src = self.blur_output
-        self.__cv_extractchannel_channel = 1.0
-
-        self.cv_extractchannel_output = None
-
-        self.__cv_threshold_src = self.cv_extractchannel_output
-        self.__cv_threshold_thresh = 65.0
-        self.__cv_threshold_maxval = 255.0
-        self.__cv_threshold_type = cv2.THRESH_BINARY
-
-        self.cv_threshold_output = None
-
-        self.__mask_input = self.blur_output
-        self.__mask_mask = self.cv_threshold_output
-
-        self.mask_output = None
-
-        self.__normalize_input = self.mask_output
-        self.__normalize_type = cv2.NORM_MINMAX
-        self.__normalize_alpha = 30.0
-        self.__normalize_beta = 255.0
-
-        self.normalize_output = None
-
-        self.__hsv_threshold_input = self.normalize_output
-        self.__hsv_threshold_hue = [50.84745762711866, 72.4428822495606]
-        self.__hsv_threshold_saturation = [0.0, 232.59226713532513]
+        self.__hsv_threshold_input = self.blur_output
+        self.__hsv_threshold_hue = [29.746372393610535, 47.98476859988284]
+        self.__hsv_threshold_saturation = [197.21223021582736, 255.0]
         self.__hsv_threshold_value = [0.0, 255.0]
 
         self.hsv_threshold_output = None
@@ -55,7 +31,7 @@ class HSVDetector:
         self.__cv_erode_src = self.hsv_threshold_output
         self.__cv_erode_kernel = None
         self.__cv_erode_anchor = (-1, -1)
-        self.__cv_erode_iterations = 1.0
+        self.__cv_erode_iterations = 6.0
         self.__cv_erode_bordertype = cv2.BORDER_CONSTANT
         self.__cv_erode_bordervalue = (-1)
 
@@ -64,7 +40,7 @@ class HSVDetector:
         self.__cv_dilate_src = self.cv_erode_output
         self.__cv_dilate_kernel = None
         self.__cv_dilate_anchor = (-1, -1)
-        self.__cv_dilate_iterations = 9.0
+        self.__cv_dilate_iterations = 6.0
         self.__cv_dilate_bordertype = cv2.BORDER_CONSTANT
         self.__cv_dilate_bordervalue = (-1)
 
@@ -76,17 +52,17 @@ class HSVDetector:
         self.find_contours_output = None
 
         self.__filter_contours_contours = self.find_contours_output
-        self.__filter_contours_min_area = 7000.0
-        self.__filter_contours_min_perimeter = 400.0
-        self.__filter_contours_min_width = 50.0
-        self.__filter_contours_max_width = 10000.0
-        self.__filter_contours_min_height = 50.0
-        self.__filter_contours_max_height = 10000.0
-        self.__filter_contours_solidity = [48.02259887005649, 100.0]
+        self.__filter_contours_min_area = 6000.0
+        self.__filter_contours_min_perimeter = 0.0
+        self.__filter_contours_min_width = 0.0
+        self.__filter_contours_max_width = 100000.0
+        self.__filter_contours_min_height = 0.0
+        self.__filter_contours_max_height = 100000.0
+        self.__filter_contours_solidity = [0.0, 100.0]
         self.__filter_contours_max_vertices = 10000.0
         self.__filter_contours_min_vertices = 0.0
         self.__filter_contours_min_ratio = 0.0
-        self.__filter_contours_max_ratio = 10.0
+        self.__filter_contours_max_ratio = 100.0
 
         self.filter_contours_output = None
 
@@ -114,25 +90,8 @@ class HSVDetector:
         self.__blur_input = source0
         (self.blur_output) = self.__blur(self.__blur_input, self.__blur_type, self.__blur_radius)
 
-        # Step CV_extractChannel0:
-        self.__cv_extractchannel_src = self.blur_output
-        (self.cv_extractchannel_output) = self.__cv_extractchannel(self.__cv_extractchannel_src, self.__cv_extractchannel_channel)
-
-        # Step CV_Threshold0:
-        self.__cv_threshold_src = self.cv_extractchannel_output
-        (self.cv_threshold_output) = self.__cv_threshold(self.__cv_threshold_src, self.__cv_threshold_thresh, self.__cv_threshold_maxval, self.__cv_threshold_type)
-
-        # Step Mask0:
-        self.__mask_input = self.blur_output
-        self.__mask_mask = self.cv_threshold_output
-        (self.mask_output) = self.__mask(self.__mask_input, self.__mask_mask)
-
-        # Step Normalize0:
-        self.__normalize_input = self.mask_output
-        (self.normalize_output) = self.__normalize(self.__normalize_input, self.__normalize_type, self.__normalize_alpha, self.__normalize_beta)
-
         # Step HSV_Threshold0:
-        self.__hsv_threshold_input = self.normalize_output
+        self.__hsv_threshold_input = self.blur_output
         (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
 
         # Step CV_erode0:
@@ -192,9 +151,6 @@ class HSVDetector:
         # Sorts contours by the smallest area first
         newContours = sortByArea(self.filter_contours_output)
 
-        FOV_x = 360
-        FOV_y = 270
-
         # Send the contour data over Serial
         for i in range (contourNum):
             cnt = newContours[i]
@@ -203,10 +159,10 @@ class HSVDetector:
             # which contour, 0 is first
             toSend = ("/" + str(i) +
                      "/" + str(getArea(cnt)) +  # Area of contour
-                     "/" + str(round((getXcoord(cnt)*FOV_x/320)-(FOV_x/2), 2)) +  # x-coordinate of centroid of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round((FOV_y/2)-(getYcoord(cnt)*FOV_y/240), 2)) +  # y-coordinate of contour, 0-270 rounded to 2 decimal
-                     "/" + str(round((h*FOV_y/240), 2)) +  # Height of contour, 0-360 rounded to 2 decimal
-                     "/" + str(round(-(w*FOV_x/320), 2))) # Width of contour, 0-270 rounded to 2 decimal
+                     "/" + str(round(getXcoord(cnt)-160, 2)) +  # x-coordinate of centroid of contour, -160 to 160 rounded to 2 decimal
+                     "/" + str(round(120-getYcoord(cnt), 2)) +  # y-coordinate of contour, -120 to 120 rounded to 2 decimal
+                     "/" + str(round(h, 2)) +  # Height of contour, 0-320 rounded to 2 decimal
+                     "/" + str(round(w, 2))) # Width of contour, 0-240 rounded to 2 decimal
             jevois.sendSerial(toSend)
 
         # Write a title:
@@ -222,7 +178,7 @@ class HSVDetector:
         self.processNoUSB(inframe)
 
         # Write a title:
-        cv2.putText(self.outimg, "NerdyJevois USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
+        # cv2.putText(self.outimg, "NerdyJevois USB", (3, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
         # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
         # fps = self.timer.stop()
