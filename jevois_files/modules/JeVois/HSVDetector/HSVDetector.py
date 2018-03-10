@@ -1,6 +1,7 @@
 import libjevois as jevois
 import cv2
 import numpy as np
+import time
 
 class HSVDetector:
     # ###################################################################################################
@@ -66,6 +67,9 @@ class HSVDetector:
 
         self.filter_contours_output = None
 
+        # self.start_time = 0
+        # self.end_time = 0
+
         # END CONSTANTS
     # ###################################################################################################
 
@@ -77,6 +81,7 @@ class HSVDetector:
 
         # Start measuring image processing time (NOTE: does not account for input conversion time):
         # self.timer.start()
+        # self.start_time = time.time()
 
 #################################################################################################
 
@@ -171,6 +176,9 @@ class HSVDetector:
         # Write frames/s info from our timer into the edge map (NOTE: does not account for output conversion time):
         # fps = self.timer.stop()
         #height, width, channels = outimg.shape # if outimg is grayscale, change to: height, width = outimg.shape
+        # self.end_time = time.time()
+        # delta_time = self.end_time - self.start_time
+
         height, width, channels = self.outimg.shape
         # cv2.putText(outimg, fps, (3, height - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255,255,255), 1, cv2.LINE_AA)
 
