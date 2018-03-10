@@ -12,12 +12,12 @@ public class resetNavX extends Command {
     public resetNavX() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-	requires(Robot.targetDetect);
+	requires(Robot.drive);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-	Robot.targetDetect.resetNavX();
+	Robot.drive.resetNavX();
     }
 
     // Called repeatedly when this Command is scheduled to run

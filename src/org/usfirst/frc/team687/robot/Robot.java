@@ -8,6 +8,7 @@
 package org.usfirst.frc.team687.robot;
 
 import org.usfirst.frc.team687.robot.subsystems.CameraThread;
+import org.usfirst.frc.team687.robot.subsystems.Drive;
 import org.usfirst.frc.team687.robot.subsystems.TargetDetector;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+	public static Drive drive;
 	public static OI oi;
 	public static CameraThread jevois;
 	public static TargetDetector targetDetect;
@@ -39,9 +41,8 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 	    targetDetect = new TargetDetector();
 //	    jevois = new CameraThread();
+	    drive = new Drive();
 	    oi = new OI();
-//		m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
 	    SmartDashboard.putData("Auto mode", m_chooser);
 	}
 
@@ -113,7 +114,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Angle: ", targetDetect.getAngle());
+		SmartDashboard.putNumber("Yaw: ", drive.getCurrentYaw());
 		SmartDashboard.putNumber("X coord: ", targetDetect.getTargetX());
 		SmartDashboard.putNumber("Length: ", targetDetect.getTargetLength());
 	}

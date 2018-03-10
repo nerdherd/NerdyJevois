@@ -3,7 +3,7 @@ package org.usfirst.frc.team687.robot.subsystems;
 import org.usfirst.frc.team687.robot.RobotMap;
 import org.usfirst.frc.team687.util.NerdyPID;
 
-import com.kauailabs.navx.frc.AHRS;
+//import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -17,7 +17,7 @@ public class TargetDetector extends Subsystem {
      *  _pixel means camera pixel dimensions
      */
 
-    private AHRS navx;
+//    private AHRS navx;
     private NerdyPID pid;
     private CameraThread jevois;
 
@@ -36,7 +36,7 @@ public class TargetDetector extends Subsystem {
     public TargetDetector(){
 	jevois = new CameraThread(BAUD, SerialPort.Port.kUSB);
 	pid = new NerdyPID();
-    	navx = new AHRS(SerialPort.Port.kMXP);
+//    	navx = new AHRS(SerialPort.Port.kMXP);
 	focalLength = (camera_FOV_pixel/2)/Math.tan(camera_FOV_degree/2);
     }
 	
@@ -87,16 +87,16 @@ public class TargetDetector extends Subsystem {
 //    	return target_coordinate_inch;
 //    }
     
-    public void resetNavX(){
-	navx.reset();
-    }
-    
-    public double getAngle(){
-	return navx.getYaw();
-    }
+//    public void resetNavX(){
+//	navx.reset();
+//    }
+//    
+//    public double getAngle(){
+//	return navx.getYaw();
+//    }
     
     public double angularTargetError(){
-	System.out.println(jevois.getTargetX());
+//	System.out.println(jevois.getTargetX());
 	return pixelToDegree(jevois.getTargetX());
     }
     
@@ -131,9 +131,9 @@ public class TargetDetector extends Subsystem {
     }
     
     public void streamon(){
-	System.out.println("STREAM ON INITIALIZED");
+//	System.out.println("STREAM ON INITIALIZED");
 	jevois.streamon();
-	System.out.println("STREAM ON INITIALIZED AGAIN");
+//	System.out.println("STREAM ON INITIALIZED AGAIN");
     }
     
     public void streamoff(){

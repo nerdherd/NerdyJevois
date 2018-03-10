@@ -13,9 +13,6 @@ public class CameraThread extends Subsystem implements Runnable {
     private Thread stream;
     String[] parts;
     private double target_centroid_pixel, target_length_pixel;
-    double startTime;
-    boolean pingTest = false;
-    double endTime;
 //    private double contourID;
     
     public CameraThread(int baud, SerialPort.Port port){
@@ -34,37 +31,26 @@ public class CameraThread extends Subsystem implements Runnable {
 		send = false;
 	    }
 	    if(cam.getBytesReceived()>0){
-		System.out.println(pingTest);
-		if(pingTest) {
-		    endTime = Timer.getFPGATimestamp();
-		    System.out.println("Start Time: " + startTime);
-		    System.out.println("End Time: " + endTime);
-		}
 //		cam.readString();
 //		System.out.println("data status is true!!!");
-//		String read = cam.readString();
+		String read = cam.readString();
 //		System.out.println("RAW OUTPUT NOW: " + read);
-		
-		//UNCOMMENT HERE
-//		if(read.charAt(0) == '/'){
-//		    
-//		    parts = dataParse(read);
-////		    contourID = Integer.parseInt(getData(0));
-//		    target_centroid_pixel = Math.abs(Double.parseDouble(getData(3)));
-////		    System.out.println("cp1: " + target_centroid_pixel);
-//		    target_length_pixel = Math.abs(Double.parseDouble(getData(6)));
-		    
-		    
-//		    System.out.println("cp2: " + target_length_pixel);
+		if(read.charAt(0) == '/'){
+		    parts = dataParse(read);
+//		    contourID = Integer.parseInt(getData(0));
+		    target_centroid_pixel = Math.abs(Double.parseDouble(getData(3)));
+//		    System.out.println("cp1: " + target_centroid_pixel);
+		    target_length_pixel = Math.abs(Double.parseDouble(getData(6)));
+//		    System.out.println("cp1: " + target_length_pixel);
 //    		    System.out.println(getData(1)); //contour 
 //    		    System.out.println(getData(2)); //area
 //    		    SmartDashboard.putNumber("x coordinate: ", Double.parseDouble(getData(3))); //x-coordinate
 //    		    System.out.println(getData(4)); //y-coordinate
 //    		    System.out.println(getData(5)); //height
 //    		    System.out.println(getData(6)); //width
-//		} else {
-//		    System.out.println(read);
-//		}
+		} else {
+		    System.out.println(read);
+		}
 	    }
 	}
     }
@@ -86,6 +72,8 @@ public class CameraThread extends Subsystem implements Runnable {
 	send = true;
     }
     
+    
+    
     private String[] dataParse(String input){
 //	System.out.println("THIS IS THE WHOLE INPUT: " + input);
 	return input.split("/");
@@ -99,8 +87,6 @@ public class CameraThread extends Subsystem implements Runnable {
     }
     
     public void ping(){
-	pingTest = true;
-	startTime = Timer.getFPGATimestamp();
 	sendCommand("ping");
     }
     
