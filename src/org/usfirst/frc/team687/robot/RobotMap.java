@@ -14,17 +14,5 @@ package org.usfirst.frc.team687.robot;
  * floating around.
  */
 public class RobotMap {
-
-    public static final double CUBE_LENGTH_INCH = 13;
-    public static final double ANGLE_TOLERANCE = 0.5;
-    public static final double DISTANCE_TOLERANCE = 1;
-	// For example to map the left and right motors, you could define the
-	// following variables to use with your drivetrain subsystem.
-	// public static int leftMotor = 1;
-	// public static int rightMotor = 2;
-
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static int rangefinderPort = 1;
-	// public static int rangefinderModule = 1;
+    
 }

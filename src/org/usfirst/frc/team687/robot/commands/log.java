@@ -12,12 +12,12 @@ public class log extends Command {
     public log() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-	requires(Robot.targetDetect);
+	requires(Robot.jevois);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-	Robot.targetDetect.log();
+	Robot.jevois.log();
     }
 
     // Called repeatedly when this Command is scheduled to run

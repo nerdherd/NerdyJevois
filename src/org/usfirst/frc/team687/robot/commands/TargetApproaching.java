@@ -1,5 +1,6 @@
 package org.usfirst.frc.team687.robot.commands;
 
+import org.usfirst.frc.team687.robot.Constants;
 import org.usfirst.frc.team687.robot.Robot;
 import org.usfirst.frc.team687.util.NerdyPID;
 
@@ -11,15 +12,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TargetApproaching extends Command {
 
-    double h, alpha, beta, hc, x, Y, Z;
+    double beta, x, Y, Z;
     NerdyPID pid;
     
     public TargetApproaching() {
 	SmartDashboard.putString("Current Command", "TargetApproaching");
-	h = 42; //mount_height
-	alpha = 70; //mount_angle
 	beta = 65;//FOV_angle_Y
-	hc = 11; //cube_height
 	Y = 320; //FOV_pixel_Y
 	requires(Robot.drive);
 	pid = new NerdyPID();
@@ -31,13 +29,13 @@ public class TargetApproaching extends Command {
     }
 
     protected void execute() {
-	x = (h-hc)*(Math.tan((beta/2)-(beta*Robot.targetDetect.getTargetY()/Y)+(alpha-(beta/2))));
+	x = (Constants.kCameraMountHeight-Constants.kCubeHeight)*(Math.tan((beta/2)-(beta*Robot.jevois.getTargetY()/Y)+(Constants.kCameraMountAngle-(beta/2))));
 	System.out.println(x);
 //	pid.calculate(x);
     }
 
     protected boolean isFinished() {
-        return isTimedOut();
+        return isTimedOut() || (x < Constants.kDistanceTolerance) ? true : false;
     }
 
     protected void end() {

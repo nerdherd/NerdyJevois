@@ -12,13 +12,13 @@ public class streamon extends Command {
     public streamon() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-	requires(Robot.targetDetect);
+	requires(Robot.jevois);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
 	System.out.println("COMMAND INITIALIZED");
-	Robot.targetDetect.streamon();
+	Robot.jevois.streamon();
 	System.out.println("COMMAND INITIALIZED AGAIN");
     }
 

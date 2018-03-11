@@ -13,14 +13,14 @@ public class ping extends Command {
     public ping() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-	requires(Robot.targetDetect);
+	requires(Robot.jevois);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
 //	Robot.jevois.ping();
 //	Timer.delay(0.01);
-	Robot.targetDetect.ping();
+	Robot.jevois.ping();
     }
 
     // Called repeatedly when this Command is scheduled to run

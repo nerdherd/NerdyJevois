@@ -18,15 +18,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LiveTargetTracking extends Command {
 
-	private boolean m_isHighGear;
 	private PGains m_rotPGains;
 
 	/**
 	 * @param isHighGear
 	 */
 	public LiveTargetTracking() {
-//		m_isHighGear = isHighGear;
-
 		requires(Robot.drive);
 		setTimeout(3.0);
 	}
@@ -34,22 +31,13 @@ public class LiveTargetTracking extends Command {
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "LiveTargetTracking");
-
 		m_rotPGains = new PGains(0.010, 0.12, 1.0);
-		
-//		if (m_isHighGear) {
-//			Robot.drive.shiftUp();
-//			m_rotPGains = Constants.kRotHighGearPGains;
-//		} else if (!m_isHighGear) {
-//			Robot.drive.shiftDown();
-//			m_rotPGains = Constants.kRotLowGearPGains;
-//		}
 	}
 
 	@Override
 	protected void execute() {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		double relativeAngleError = Robot.targetDetect.angularTargetError(); // get from JeVois
+		double relativeAngleError = Robot.jevois.angularTargetError(); // get from JeVois
 //		double processingTime = VisionAdapter.getInstance().getProcessedTime();
 //		double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime); // latency compensation
 		double absoluteDesiredAngle = relativeAngleError + Robot.drive.getCurrentYaw();
@@ -68,7 +56,7 @@ public class LiveTargetTracking extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return isTimedOut();
+	        return isTimedOut() || (Robot.jevois.angularTargetError() < Constants.kAngleTolerance) ? true : false;
 	}
 
 	@Override
