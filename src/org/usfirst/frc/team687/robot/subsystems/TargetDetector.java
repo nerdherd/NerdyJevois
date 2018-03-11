@@ -154,6 +154,10 @@ public class TargetDetector extends Subsystem {
     public double getTargetX(){
    	return jevois.getTargetX();
     }
+    
+    public double getTargetY(){
+	return jevois.getTargetY();
+    }
        
     public double getTargetLength(){
 	return jevois.getTargetLength();

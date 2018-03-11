@@ -12,7 +12,7 @@ public class CameraThread extends Subsystem implements Runnable {
     private String sendValue;
     private Thread stream;
     String[] parts;
-    private double target_centroid_pixel, target_length_pixel;
+    private double target_centroid_X_pixel, target_centroid_Y_pixel, target_length_pixel;
 //    private double contourID;
     
     public CameraThread(int baud, SerialPort.Port port){
@@ -38,7 +38,8 @@ public class CameraThread extends Subsystem implements Runnable {
 		if(read.charAt(0) == '/'){
 		    parts = dataParse(read);
 //		    contourID = Integer.parseInt(getData(0));
-		    target_centroid_pixel = Math.abs(Double.parseDouble(getData(3)));
+		    target_centroid_X_pixel = Double.parseDouble(getData(3));
+		    target_centroid_Y_pixel = Double.parseDouble(getData(4));
 //		    System.out.println("cp1: " + target_centroid_pixel);
 		    target_length_pixel = Math.abs(Double.parseDouble(getData(6)));
 //		    System.out.println("cp1: " + target_length_pixel);
@@ -56,7 +57,10 @@ public class CameraThread extends Subsystem implements Runnable {
     }
     
     public double getTargetX(){
-	return target_centroid_pixel;
+	return target_centroid_X_pixel;
+    }
+    public double getTargetY(){
+	return target_centroid_Y_pixel;
     }
     
     public double getTargetLength(){
@@ -94,9 +98,9 @@ public class CameraThread extends Subsystem implements Runnable {
 //	return contourID;
 //    }
     
-    public double getTargetCentroidXPixel(){
-	return target_centroid_pixel;
-    }
+//    public double getTargetCentroidXPixel(){
+//	return target_centroid_pixel;
+//    }
     
     public double getTargetLengthPixel(){
 	return target_length_pixel;
