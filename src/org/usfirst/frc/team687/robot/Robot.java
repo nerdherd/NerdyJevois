@@ -8,12 +8,14 @@
 package org.usfirst.frc.team687.robot;
 
 import org.usfirst.frc.team687.robot.subsystems.Jevois;
+import org.usfirst.frc.team687.robot.subsystems.Streamer;
 import org.usfirst.frc.team687.robot.subsystems.Drive;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -25,6 +27,7 @@ public class Robot extends TimedRobot {
 	public static OI oi;
 	public static Jevois jevois;
 //	public static TargetDetector targetDetect;
+	public static Subsystem livestream;
 	
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -37,6 +40,7 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 //	    targetDetect = new TargetDetector();
 	    jevois = new Jevois(115200, SerialPort.Port.kUSB);
+	    livestream = new Streamer();
 	    drive = new Drive();
 	    oi = new OI();
 	    SmartDashboard.putData("Auto mode", m_chooser);
