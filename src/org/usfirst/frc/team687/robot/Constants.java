@@ -7,6 +7,10 @@ package org.usfirst.frc.team687.robot;
  */
 
 public class Constants {
+    public final static double kVerticalFOV = 51.36; //degrees
+    public final static double kHorizonalFOV = 39.66; //degrees
+    public final static double kVerticalPixels = 320; //pixels
+    public final static double kHorizonalPixels = 240; //pixels
     
     public final static double kCameraMountAngle = 70; //degrees
     public final static double kCameraMountHeight = 42; //inches

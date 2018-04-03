@@ -1,5 +1,7 @@
 package org.usfirst.frc.team687.robot.subsystems;
 
+import org.usfirst.frc.team687.robot.Constants;
+
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,14 +16,11 @@ public class Jevois extends Subsystem implements Runnable {
     //Jevois Serial Output Data
     private double contour_id, target_area_pixel, target_centroid_X_pixel, target_centroid_Y_pixel,
     target_height_pixel, target_length_pixel;
-    
-    private double camera_FOV_pixel = 320;
-    private double camera_FOV_degree = 65; //55
-    
+        
     public double focalLength;
     
     public Jevois(int baud, SerialPort.Port port){
-	focalLength = (camera_FOV_pixel/2)/Math.tan(camera_FOV_degree/2);
+	focalLength = (Constants.kVerticalPixels/2)/Math.tan(Constants.kHorizonalFOV/2);
 	send = false;
 	sendValue = "None";
     	cam = new SerialPort(baud, port);
@@ -42,10 +41,10 @@ public class Jevois extends Subsystem implements Runnable {
 		    parts = dataParse(read);
 		    contour_id = Integer.parseInt(getData(1));
 		    target_area_pixel = Double.parseDouble(getData(2));
-		    target_centroid_X_pixel = Double.parseDouble(getData(3));
-		    target_centroid_Y_pixel = Double.parseDouble(getData(4));
-		    target_height_pixel = Double.parseDouble(getData(5));
-		    target_length_pixel = Double.parseDouble(getData(6));
+		    target_centroid_Y_pixel = Double.parseDouble(getData(3));
+		    target_centroid_X_pixel = Double.parseDouble(getData(4));
+		    target_length_pixel = Double.parseDouble(getData(5));
+		    target_height_pixel = Double.parseDouble(getData(6));
 		} else {
 		    System.out.println(read);
 		}
@@ -73,6 +72,9 @@ public class Jevois extends Subsystem implements Runnable {
     
     public double getTargetLength(){
 	return target_length_pixel;
+    }
+    public double getTargetHeight(){
+	return target_height_pixel;
     }
     
     public void end(){

@@ -12,13 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class TargetApproaching extends Command {
 
-    double beta, x, Y, Z;
+    double x, Z;
     NerdyPID pid;
     
     public TargetApproaching() {
 	SmartDashboard.putString("Current Command", "TargetApproaching");
-	beta = 65;//FOV_angle_Y
-	Y = 320; //FOV_pixel_Y
 	requires(Robot.drive);
 	pid = new NerdyPID();
 	pid.setPID(0.001,0,0.001);
@@ -29,7 +27,7 @@ public class TargetApproaching extends Command {
     }
 
     protected void execute() {
-	x = (Constants.kCameraMountHeight-Constants.kCubeHeight)*(Math.tan((beta/2)-(beta*Robot.jevois.getTargetY()/Y)+(Constants.kCameraMountAngle-(beta/2))));
+	x = (Constants.kCameraMountHeight-Constants.kCubeHeight)*(Math.tan((Constants.kVerticalFOV/2)-(Constants.kVerticalFOV*Robot.jevois.getTargetY()/Constants.kVerticalPixels)+(Constants.kCameraMountAngle-(Constants.kVerticalFOV/2))));
 	System.out.println(x);
 //	pid.calculate(x);
     }
