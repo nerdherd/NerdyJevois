@@ -44,7 +44,7 @@ public class Streamer extends Subsystem implements Runnable{
 
     @Override
     public void run() {
-	System.out.println("WE ARE STREAMING BOYS");
+//	System.out.println("WE ARE STREAMING BOYS");
 	// TODO Auto-generated method stub
 	if (cvSink.grabFrame(mat) == 0) {
 		outputStream.notifyError(cvSink.getError());
