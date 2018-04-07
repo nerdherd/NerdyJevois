@@ -21,7 +21,7 @@ public class Jevois extends Subsystem implements Runnable {
     private double angularTargetError;
     
     public Jevois(int baud, SerialPort.Port port){
-	focalLength = (Constants.kVerticalPixels/2)/Math.tan(Constants.kHorizonalFOV/2);
+	focalLength = (Constants.kHorizonalPixels/2)/Math.tan(Constants.kHorizonalFOV/2);
 	send = false;
 	sendValue = "None";
     	cam = new SerialPort(baud, port);

@@ -31,23 +31,19 @@ public class LiveTargetTracking extends Command {
 	@Override
 	protected void initialize() {
 		SmartDashboard.putString("Current Command", "LiveTargetTracking");
-		m_rotPGains = new PGains(0.010, 0.12, 1.0);
+		m_rotPGains = new PGains(0.003, 0.12, 1.0); //kp ,min pow, max pow
 	}
 
 	@Override
 	protected void execute() {
-		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		double relativeAngleError = Robot.jevois.getAngularTargetError(); // get from JeVois
+		double relativeAngleError = Robot.jevois.getAngularTargetError(); //relative error in degrees to target
 //		double processingTime = VisionAdapter.getInstance().getProcessedTime();
 //		double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime); // latency compensation
-		double absoluteDesiredAngle = relativeAngleError + Robot.drive.getCurrentYaw();
-		double error = absoluteDesiredAngle - robotAngle;
-		error = (error > 180) ? error - 360 : error;
-		error = (error < -180) ? error + 360 : error;
+		
 
-		double power = m_rotPGains.getP() * error;
+		double power = m_rotPGains.getP() * relativeAngleError;
 		power = NerdyMath.threshold(power, m_rotPGains.getMinPower(), m_rotPGains.getMaxPower());
-		if (Math.abs(error) <= Constants.kDriveRotationDeadband) {
+		if (Math.abs(relativeAngleError) <= Constants.kDriveRotationDeadband) {
 			power = 0;
 		}
 
@@ -56,7 +52,8 @@ public class LiveTargetTracking extends Command {
 
 	@Override
 	protected boolean isFinished() {
-	        return isTimedOut() || (Robot.jevois.getAngularTargetError() < Constants.kAngleTolerance) ? true : false;
+	    return false;
+//	    return isTimedOut() || (Robot.jevois.getAngularTargetError() < Constants.kAngleTolerance) ? true : false;
 	}
 
 	@Override
@@ -68,5 +65,4 @@ public class LiveTargetTracking extends Command {
 	protected void interrupted() {
 		end();
 	}
-
 }

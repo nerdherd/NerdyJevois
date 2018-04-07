@@ -17,11 +17,11 @@ public class Drive extends Subsystem {
     public Drive() {
 	m_nav = new AHRS(SerialPort.Port.kMXP);
 	l1 = new TalonSRX(1); // renew ports
-	l2 = new TalonSRX(3);
-	l3 = new TalonSRX(2);
-	r1 = new TalonSRX(4);
-	r2 = new TalonSRX(5);
-	r3 = new TalonSRX(6);
+	l2 = new TalonSRX(5);
+//	l3 = new TalonSRX(2);
+	r1 = new TalonSRX(0);
+	r2 = new TalonSRX(4);
+//	r3 = new TalonSRX(6);
     }
 
     public void initDefaultCommand() {
@@ -40,10 +40,10 @@ public class Drive extends Subsystem {
     public void setPower(double leftPower, double rightPower) {
     	r1.set(ControlMode.PercentOutput, rightPower);
     	r2.set(ControlMode.PercentOutput, rightPower);
-    	r3.set(ControlMode.PercentOutput, rightPower);
+//    	r3.set(ControlMode.PercentOutput, rightPower);
     	l1.set(ControlMode.PercentOutput, leftPower);
     	l2.set(ControlMode.PercentOutput, leftPower);
-    	l3.set(ControlMode.PercentOutput, leftPower);
+//    	l3.set(ControlMode.PercentOutput, leftPower);
     }
     
     public void stopDrive(){

@@ -21,22 +21,22 @@ public class OI {
 	public OI() {
 		joy = new Joystick(0);
 		
-		ping = new JoystickButton(joy, 1);
-		ping.whenPressed(new ping());
+//		ping = new JoystickButton(joy, 1);
+//		ping.whenPressed(new ping());
+//		
+//		streamoff = new JoystickButton(joy,2);
+//		streamoff.whenPressed(new streamoff());
+//		
+//		streamon = new JoystickButton(joy,3);
+//		streamon.whenPressed(new streamon());
+//		
+//		log = new JoystickButton(joy, 4);
+//		log.whenPressed(new log());
 		
-		streamoff = new JoystickButton(joy,2);
-		streamoff.whenPressed(new streamoff());
-		
-		streamon = new JoystickButton(joy,3);
-		streamon.whenPressed(new streamon());
-		
-		log = new JoystickButton(joy, 4);
-		log.whenPressed(new log());
-		
-		resetNavX = new JoystickButton(joy,9);
+		resetNavX = new JoystickButton(joy,3);
 		resetNavX.whenPressed(new resetNavX());
 		
-		liveTargetTrack = new JoystickButton(joy, 11);
+		liveTargetTrack = new JoystickButton(joy, 1);
 		liveTargetTrack.whenPressed(new LiveTargetTracking());
 	}
 }
