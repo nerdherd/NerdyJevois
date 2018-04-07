@@ -113,10 +113,26 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+	    /*
+	     * parts = dataParse(read);
+		    contour_id = Integer.parseInt(getData(1));
+		    target_area_pixel = Double.parseDouble(getData(2));
+		    target_centroid_Y_pixel = Double.parseDouble(getData(3));
+		    target_centroid_X_pixel = Double.parseDouble(getData(4));
+		    target_length_pixel = Double.parseDouble(getData(5));
+		    target_height_pixel = Double.parseDouble(getData(6));
+	     */
+	    
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Target Angle Error: ", jevois.getAngularTargetError());
 		SmartDashboard.putNumber("Yaw: ", drive.getCurrentYaw());
+		SmartDashboard.putNumber("Contour ID: ", jevois.getContourID());
 		SmartDashboard.putNumber("X coord: ", jevois.getTargetX());
+		SmartDashboard.putNumber("Y coord: ", jevois.getTargetY());
+		SmartDashboard.putNumber("Height: ", jevois.getTargetHeight());
 		SmartDashboard.putNumber("Length: ", jevois.getTargetLength());
+		SmartDashboard.putNumber("Area: ", jevois.getTargetArea());
+
 	}
 
 	/**

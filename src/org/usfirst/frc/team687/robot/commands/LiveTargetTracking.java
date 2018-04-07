@@ -37,7 +37,7 @@ public class LiveTargetTracking extends Command {
 	@Override
 	protected void execute() {
 		double robotAngle = (360 - Robot.drive.getCurrentYaw()) % 360;
-		double relativeAngleError = Robot.jevois.angularTargetError(); // get from JeVois
+		double relativeAngleError = Robot.jevois.getAngularTargetError(); // get from JeVois
 //		double processingTime = VisionAdapter.getInstance().getProcessedTime();
 //		double absoluteDesiredAngle = relativeAngleError + Robot.drive.timeMachineYaw(processingTime); // latency compensation
 		double absoluteDesiredAngle = relativeAngleError + Robot.drive.getCurrentYaw();
@@ -56,7 +56,7 @@ public class LiveTargetTracking extends Command {
 
 	@Override
 	protected boolean isFinished() {
-	        return isTimedOut() || (Robot.jevois.angularTargetError() < Constants.kAngleTolerance) ? true : false;
+	        return isTimedOut() || (Robot.jevois.getAngularTargetError() < Constants.kAngleTolerance) ? true : false;
 	}
 
 	@Override

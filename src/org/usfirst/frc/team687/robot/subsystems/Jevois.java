@@ -12,12 +12,13 @@ public class Jevois extends Subsystem implements Runnable {
     private String sendValue;
     private Thread stream;
     String[] parts;
+    public double focalLength;
     
     //Jevois Serial Output Data
     private double contour_id, target_area_pixel, target_centroid_X_pixel, target_centroid_Y_pixel,
     target_height_pixel, target_length_pixel;
         
-    public double focalLength;
+    private double angularTargetError;
     
     public Jevois(int baud, SerialPort.Port port){
 	focalLength = (Constants.kVerticalPixels/2)/Math.tan(Constants.kHorizonalFOV/2);
@@ -52,8 +53,10 @@ public class Jevois extends Subsystem implements Runnable {
 	}
     }
     
-    public double angularTargetError(){
-	System.out.println("angular Target Error:" + pixelToDegree(getTargetX()));
+    //Robot functionalities
+    public double getAngularTargetError(){
+//	System.out.println("angular Target Error:" + pixelToDegree(getTargetX()));
+//	angularTargetError = pixelToDegree(getTargetX());
 	return pixelToDegree(getTargetX());
     }
     
@@ -63,9 +66,15 @@ public class Jevois extends Subsystem implements Runnable {
 	return degree;
     }
     
+    //get Jevois values
+    public double getContourID(){
+	return contour_id;
+    }
+    
     public double getTargetX(){
 	return target_centroid_X_pixel;
     }
+    
     public double getTargetY(){
 	return target_centroid_Y_pixel;
     }
@@ -73,14 +82,21 @@ public class Jevois extends Subsystem implements Runnable {
     public double getTargetLength(){
 	return target_length_pixel;
     }
+    
     public double getTargetHeight(){
 	return target_height_pixel;
+    }
+    
+    public double getTargetArea(){
+	return target_area_pixel;
     }
     
     public void end(){
 	stream.interrupt();
     }
     
+    
+    //jevois serial commands
     private void sendCommand(String value){
 	sendValue = value + "\n";
 	send = true;
@@ -97,14 +113,6 @@ public class Jevois extends Subsystem implements Runnable {
     
     public void ping(){
 	sendCommand("ping");
-    }
-    
-//    public double getContourID(){
-//	return contourID;
-//    }
-    
-    public double getTargetLengthPixel(){
-	return target_length_pixel;
     }
     
     public void init(){
