@@ -4,7 +4,7 @@ import org.usfirst.frc.team687.robot.commands.ping;
 import org.usfirst.frc.team687.robot.commands.streamoff;
 import org.usfirst.frc.team687.robot.commands.streamon;
 import org.usfirst.frc.team687.robot.commands.log;
-import org.usfirst.frc.team687.robot.commands.resetNavX;
+//import org.usfirst.frc.team687.robot.commands.resetNavX;
 import org.usfirst.frc.team687.robot.commands.LiveTargetTracking;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -33,8 +33,8 @@ public class OI {
 //		log = new JoystickButton(joy, 4);
 //		log.whenPressed(new log());
 		
-		resetNavX = new JoystickButton(joy,3);
-		resetNavX.whenPressed(new resetNavX());
+//		resetNavX = new JoystickButton(joy,3);
+//		resetNavX.whenPressed(new resetNavX());
 		
 		liveTargetTrack = new JoystickButton(joy, 1);
 		liveTargetTrack.whenPressed(new LiveTargetTracking());

@@ -124,8 +124,9 @@ public class Robot extends TimedRobot {
 	     */
 	    
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Target Distance Error: ", jevois.getDistanceTargetError());
 		SmartDashboard.putNumber("Target Angle Error: ", jevois.getAngularTargetError());
-		SmartDashboard.putNumber("Yaw: ", drive.getCurrentYaw());
+//		SmartDashboard.putNumber("Yaw: ", drive.getCurrentYaw());
 		SmartDashboard.putNumber("Contour ID: ", jevois.getContourID());
 		SmartDashboard.putNumber("X coord: ", jevois.getTargetX());
 		SmartDashboard.putNumber("Y coord: ", jevois.getTargetY());

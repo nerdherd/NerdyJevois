@@ -1,6 +1,7 @@
 package org.usfirst.frc.team687.robot.subsystems;
 
 import org.usfirst.frc.team687.robot.Constants;
+import org.usfirst.frc.team687.robot.Robot;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,7 +19,7 @@ public class Jevois extends Subsystem implements Runnable {
     private double contour_id, target_area_pixel, target_centroid_X_pixel, target_centroid_Y_pixel,
     target_height_pixel, target_length_pixel;
         
-    private double angularTargetError;
+    private double angularTargetError, distanceTargetError;
     
     public Jevois(int baud, SerialPort.Port port){
 	focalLength = (Constants.kHorizonalPixels/2)/Math.tan(Constants.kHorizonalFOV/2);
@@ -64,6 +65,16 @@ public class Jevois extends Subsystem implements Runnable {
 	double sign = pixel > 0 ? 1 : -1;
 	double degree = sign* Math.atan(Math.abs(pixel/focalLength));
 	return degree;
+    }
+    
+    public double getDistanceTargetError(){
+	double alpha = Math.atan(Robot.jevois.getTargetY()/focalLength);
+	double beta = Constants.kCameraMountAngle + alpha;
+	double centroidVar = (-alpha/45) + 1;
+	double centroidHeight = Constants.kCubeHeight*centroidVar;
+	distanceTargetError = centroidHeight*Math.tan(beta);
+//	distanceTargetError = (Constants.kCameraMountHeight-Constants.kCubeHeight)*(Math.tan((Constants.kVerticalFOV/2)-(Constants.kVerticalFOV*Robot.jevois.getTargetY()/Constants.kVerticalPixels)+(Constants.kCameraMountAngle-(Constants.kVerticalFOV/2))));
+	return distanceTargetError;
     }
     
     //get Jevois values
