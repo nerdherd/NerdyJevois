@@ -1,52 +1,69 @@
 package org.usfirst.frc.team687.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SerialPort;
+import org.usfirst.frc.team687.robot.RobotMap;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class Drive extends Subsystem {
-	
-    public TalonSRX l1, l2, l3, r1, r2, r3;
-//    public AHRS m_nav;
+
+    private final TalonSRX m_leftMaster, m_rightMaster, m_leftSlave1, m_rightSlave1;
+    // public AHRS m_nav;
 
     public Drive() {
-//	m_nav = new AHRS(SerialPort.Port.kMXP);
-	l1 = new TalonSRX(1); // renew ports
-	l2 = new TalonSRX(5);
-//	l3 = new TalonSRX(2);
-	r1 = new TalonSRX(0);
-	r2 = new TalonSRX(4);
-//	r3 = new TalonSRX(6);
+	// m_nav = new AHRS(SerialPort.Port.kMXP);
+//	m_leftMaster = new TalonSRX(RobotMap.kLeftMasterTalonID); // renew ports
+//	m_rightMaster = new TalonSRX(RobotMap.kRightMasterTalonID);
+//
+//	m_leftSlave1 = new TalonSRX(RobotMap.kLeftSlaveTalon1ID);
+//	m_rightSlave1 = new TalonSRX(RobotMap.kRightSlaveTalon1ID);
+	
+	
+	m_rightSlave1 = new TalonSRX(2);
+	m_rightMaster = new TalonSRX(1);
+
+	m_leftMaster = new TalonSRX(4); // renew ports
+	m_leftSlave1 = new TalonSRX(6);
+
     }
 
     public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
     }
+
+//     public double getCurrentYaw() {
+////     return m_nav.getYaw();
+//     }
     
-//    public double getCurrentYaw() {
-//	return m_nav.getYaw();
-//    }
-//    
-//    public void resetNavX(){
-//	m_nav.reset();
-//    }
-    
+     public void resetNavX(){
+//     m_nav.reset();
+     }
+
     public void setPower(double leftPower, double rightPower) {
-    	r1.set(ControlMode.PercentOutput, rightPower);
-    	r2.set(ControlMode.PercentOutput, rightPower);
-//    	r3.set(ControlMode.PercentOutput, rightPower);
-    	l1.set(ControlMode.PercentOutput, leftPower);
-    	l2.set(ControlMode.PercentOutput, leftPower);
-//    	l3.set(ControlMode.PercentOutput, leftPower);
+	m_leftMaster.set(ControlMode.PercentOutput, leftPower);
+	m_rightMaster.set(ControlMode.PercentOutput, rightPower);
+
+	m_leftSlave1.set(ControlMode.PercentOutput, leftPower);
+	m_rightSlave1.set(ControlMode.PercentOutput, rightPower);
+	
+	SmartDashboard.putNumber("Right Power", rightPower);
+	SmartDashboard.putNumber("Left Power ", leftPower);
+    }
+
+    public void stopDrive() {
+	setPower(0.0, 0.0);
     }
     
-    public void stopDrive(){
-    	setPower(0.0, 0.0);
+    public void testDrive(){
+	setPower(.25, -.25);
+    }
+    
+    public void printPower(){
+	
     }
 }

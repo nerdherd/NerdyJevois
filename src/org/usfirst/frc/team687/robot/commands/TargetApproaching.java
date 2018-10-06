@@ -1,6 +1,5 @@
 package org.usfirst.frc.team687.robot.commands;
 
-import org.usfirst.frc.team687.robot.Constants;
 import org.usfirst.frc.team687.robot.Robot;
 import org.usfirst.frc.team687.util.NerdyPID;
 
@@ -13,12 +12,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TargetApproaching extends Command {
 
     NerdyPID pid;
-    
+
     public TargetApproaching() {
 	SmartDashboard.putString("Current Command", "TargetApproaching");
 	requires(Robot.drive);
 	pid = new NerdyPID();
-	pid.setPID(0.001,0,0.001);
+	pid.setPID(0.001, 0, 0.001);
 	setTimeout(3.0);
     }
 
@@ -26,13 +25,13 @@ public class TargetApproaching extends Command {
     }
 
     protected void execute() {
-	
-//	pid.calculate(x);
+
     }
 
     protected boolean isFinished() {
 	return false;
-//        return isTimedOut() || (x < Constants.kDistanceTolerance) ? true : false;
+	// return isTimedOut() || (x < Constants.kDistanceTolerance) ? true :
+	// false;
     }
 
     protected void end() {
