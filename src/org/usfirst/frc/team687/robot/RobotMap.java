@@ -14,6 +14,16 @@ package org.usfirst.frc.team687.robot;
  * floating around.
  */
 public class RobotMap {
+	
+	// Cosmos testing
+	
+	public static final int kRightTalon1 = 1;
+	public static final int kRightTalon2 = 2;
+	public static final int kLeftTalon1 = 4;
+	public static final int kLeftTalon2 = 6;
+	
+	// Power up robots
+	
     public static final int kRightMasterTalonID = 0;
     public static final int kLeftMasterTalonID = 1;
 

@@ -11,20 +11,23 @@ import org.usfirst.frc.team687.robot.subsystems.Jevois;
 import org.usfirst.frc.team687.robot.subsystems.Streamer;
 import org.usfirst.frc.team687.robot.subsystems.Drive;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * 
  */
 public class Robot extends TimedRobot {
+	
+	public static final String kDate = "2018_09_29_";
 
 	public static Drive drive;
 	public static Jevois jevois;
 	public static Subsystem livestream;
+	public static DriverStation ds;
 	
 	public static OI oi;
 
@@ -34,11 +37,12 @@ public class Robot extends TimedRobot {
 	    livestream = new Streamer();
 	    drive = new Drive();
 	    oi = new OI();
+	    ds = DriverStation.getInstance();
 	}
 
 	@Override
 	public void disabledInit() {
-
+		jevois.stopLog();
 	}
 
 	@Override
@@ -61,7 +65,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-
+		jevois.startLog();
 	}
 
 	/**
@@ -69,18 +73,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-
-	    
 		Scheduler.getInstance().run();
-		SmartDashboard.putNumber("Target Distance Error: ", jevois.getDistanceTargetError());
-		SmartDashboard.putNumber("Target Angle Error: ", jevois.getAngularTargetError());
-		SmartDashboard.putNumber("Contour ID: ", jevois.getContourID()); // 1st in list
-		SmartDashboard.putNumber("X coord: ", jevois.getTargetX()); // 4th
-		SmartDashboard.putNumber("Y coord: ", jevois.getTargetY()); // 3rd
-		SmartDashboard.putNumber("Height: ", jevois.getTargetHeight()); // 6th
-		SmartDashboard.putNumber("Length: ", jevois.getTargetLength()); // 5th
-		SmartDashboard.putNumber("Area: ", jevois.getTargetArea()); // 2nd
-
+		
+		jevois.reportToSmartDashboard();
+		jevois.logToCSV();
 	}
 
 	/**
