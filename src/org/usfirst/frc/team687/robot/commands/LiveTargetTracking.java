@@ -35,12 +35,13 @@ public class LiveTargetTracking extends Command {
 	double relativeAngleError = Robot.jevois.getAngularTargetError(); 
 									 
 	double power = kP * -relativeAngleError;
+	
 	if (Math.abs(relativeAngleError) <= Constants.kDriveRotationDeadband || (Math.abs(relativeAngleError) >= 25)) {
 	    power = 0;
 	} else {
 	    Robot.drive.setPower(power, power);
 	}
-	SmartDashboard.putNumber("Rot Power", power);
+	SmartDashboard.putNumber("Rotational Power", power);
 
     }
 
